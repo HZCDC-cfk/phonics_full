@@ -3,67 +3,54 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>🔤 自然拼读 · 音素拼读练习</title>
+    <title>🔤 完整自然拼读 · 音素拼读练习</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body {
-            font-family: 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            background: linear-gradient(145deg, #f0f5fb 0%, #e2eaf3 100%);
+            font-family: 'Segoe UI', 'Comic Sans MS', sans-serif;
+            background: #f0f5fb;
             min-height: 100vh;
-            padding: 24px 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            padding: 20px 12px;
         }
         .app {
-            max-width: 1000px;
-            width: 100%;
-            background: rgba(255,255,255,0.85);
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.88);
             backdrop-filter: blur(6px);
-            border-radius: 48px;
-            padding: 28px 28px 36px;
-            box-shadow: 0 20px 60px rgba(0,20,40,0.12);
-            border: 1px solid rgba(255,255,255,0.5);
+            border-radius: 40px;
+            padding: 24px 24px 32px;
+            box-shadow: 0 20px 60px rgba(0,20,40,0.10);
         }
         h1 {
-            font-size: 2.2rem;
-            font-weight: 700;
+            font-size: 2rem;
             color: #1a3244;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
         }
-        h1 small { font-size: 1rem; font-weight: 400; color: #4f7a9c; }
+        h1 small { font-size: 0.9rem; font-weight: 400; color: #4f7a9c; }
         .sub {
             color: #3a5f7a;
-            font-size: 1.05rem;
             border-left: 4px solid #6ab0e6;
-            padding-left: 16px;
-            margin-bottom: 24px;
-            opacity: 0.8;
+            padding-left: 14px;
+            margin-bottom: 18px;
+            font-size: 0.95rem;
         }
 
-        /* 规则选择器 - 滚动 */
-        .rule-strip {
+        /* 分类筛选 */
+        .category-strip {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px 8px;
-            margin-bottom: 20px;
-            max-height: 120px;
-            overflow-y: auto;
-            padding: 4px 2px;
-            scrollbar-width: thin;
+            gap: 6px;
+            margin-bottom: 14px;
         }
-        .rule-strip::-webkit-scrollbar { width: 4px; }
-        .rule-strip::-webkit-scrollbar-thumb { background: #6ab0e6; border-radius: 4px; }
-
-        .rule-btn {
+        .cat-btn {
             background: white;
             border: none;
-            padding: 6px 14px;
+            padding: 5px 14px;
             border-radius: 30px;
-            font-size: 0.82rem;
+            font-size: 0.75rem;
             font-weight: 600;
             color: #1a3244;
             cursor: pointer;
@@ -72,87 +59,106 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.03);
             white-space: nowrap;
         }
-        .rule-btn:hover { transform: translateY(-2px); background: #f5faff; }
-        .rule-btn.active {
+        .cat-btn:hover { background: #e8f0f8; }
+        .cat-btn.active {
             border-color: #6ab0e6;
-            background: #e3f0fa;
+            background: #dcebf7;
             color: #0d4b6e;
-            box-shadow: 0 4px 12px rgba(106, 176, 230, 0.25);
         }
 
+        /* 规则选择 */
+        .rule-strip {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px 7px;
+            margin-bottom: 16px;
+            max-height: 130px;
+            overflow-y: auto;
+            padding: 4px 2px;
+        }
+        .rule-strip::-webkit-scrollbar { width: 4px; }
+        .rule-strip::-webkit-scrollbar-thumb { background: #6ab0e6; border-radius: 4px; }
+
+        .rule-btn {
+            background: #f5f8fc;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1a3244;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .rule-btn:hover { background: #e0ecf7; }
+        .rule-btn.active {
+            border-color: #f4a261;
+            background: #fef0e0;
+            color: #a85a1a;
+        }
+
+        /* 主内容 */
         .blend-area {
             background: white;
-            border-radius: 36px;
-            padding: 24px 26px 30px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.04);
-            margin-bottom: 16px;
-            border: 1px solid rgba(255,255,255,0.6);
+            border-radius: 28px;
+            padding: 20px 22px 26px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
         }
         .rule-header {
             display: flex;
             align-items: baseline;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
-        .rule-name { font-size: 1.6rem; font-weight: 700; color: #0d2b3e; }
+        .rule-name { font-size: 1.5rem; font-weight: 700; color: #0d2b3e; }
         .rule-phoneme {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             background: #d7e9f7;
-            padding: 0 18px;
+            padding: 0 16px;
             border-radius: 40px;
             font-weight: 600;
             color: #0f5b85;
-            letter-spacing: 1px;
         }
         .rule-desc {
             color: #3a5f7a;
-            font-size: 0.95rem;
-            margin: 4px 0 14px 0;
-            padding-bottom: 12px;
+            font-size: 0.9rem;
+            margin: 2px 0 12px;
+            padding-bottom: 10px;
             border-bottom: 2px dashed #dce6ef;
         }
 
         .blend-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-            gap: 12px;
-            margin: 8px 0 6px;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 6px 0;
         }
         .blend-card {
             background: #f5faff;
-            border-radius: 20px;
-            padding: 14px 8px 12px;
+            border-radius: 18px;
+            padding: 12px 6px 10px;
             text-align: center;
-            transition: all 0.2s;
             border: 2px solid transparent;
+            transition: all 0.2s;
             cursor: default;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
         .blend-card:hover { border-color: #8fc9f0; background: #f0f8ff; }
         .blend-card.active-card { border-color: #f4a261; background: #fef5ed; }
 
-        .word-display {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #0a2536;
-            letter-spacing: 0.5px;
-        }
-        .phoneme-chips {
-            display: flex;
-            gap: 4px;
-            flex-wrap: wrap;
-            justify-content: center;
-            margin: 2px 0;
-        }
+        .word-display { font-size: 1.7rem; font-weight: 700; color: #0a2536; }
+        .phoneme-chips { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; }
         .phoneme-chip {
             background: #dbe7f1;
             padding: 2px 10px;
             border-radius: 30px;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #1f4b66;
             cursor: pointer;
@@ -162,46 +168,35 @@
         }
         .phoneme-chip:hover { background: #6ab0e6; color: white; transform: scale(1.08); }
         .phoneme-chip:active { transform: scale(0.92); }
-        .phoneme-chip.playing { background: #f4a261; color: white; border-color: #e07c3a; transform: scale(1.1); }
+        .phoneme-chip.playing { background: #f4a261; color: white; border-color: #e07c3a; }
 
-        .action-row {
-            display: flex;
-            gap: 4px;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 2px;
-        }
+        .action-row { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; margin-top: 2px; }
         .speak-btn {
             background: #e4edf6;
             border: none;
             border-radius: 30px;
-            padding: 4px 12px;
-            font-size: 0.8rem;
+            padding: 3px 12px;
+            font-size: 0.75rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s;
             color: #1f4b66;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
         }
-        .speak-btn:hover { background: #6ab0e6; color: white; transform: scale(1.04); }
-        .speak-btn:active { transform: scale(0.94); }
+        .speak-btn:hover { background: #6ab0e6; color: white; }
         .speak-btn.blend-btn { background: #d5e8d5; color: #2d6a2d; }
         .speak-btn.blend-btn:hover { background: #5cb85c; color: white; }
 
         /* 拼读演示 */
         .blend-demo {
-            margin-top: 18px;
-            padding-top: 16px;
+            margin-top: 16px;
+            padding-top: 14px;
             border-top: 2px dashed #dce6ef;
         }
         .blend-demo-title {
             font-weight: 600;
             color: #1a3244;
-            font-size: 1rem;
-            margin-bottom: 10px;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -211,53 +206,61 @@
             display: flex;
             flex-wrap: wrap;
             align-items: center;
-            gap: 8px 5px;
+            gap: 6px 4px;
             background: #f2f8fe;
-            padding: 14px 20px;
-            border-radius: 50px;
-            min-height: 60px;
+            padding: 12px 18px;
+            border-radius: 40px;
+            min-height: 50px;
         }
         .step-phoneme {
             background: white;
-            padding: 4px 16px;
+            padding: 3px 14px;
             border-radius: 30px;
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 700;
             color: #0f5b85;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
             border: 2px solid #cde0ef;
             cursor: pointer;
             transition: all 0.15s;
             user-select: none;
         }
-        .step-phoneme:hover { background: #6ab0e6; color: white; transform: scale(1.06); }
-        .step-phoneme:active { transform: scale(0.94); }
-        .step-phoneme.active-step { background: #f4a261; color: white; border-color: #e07c3a; transform: scale(1.1); }
-        .step-arrow { font-size: 1.6rem; color: #6ab0e6; font-weight: 300; }
+        .step-phoneme:hover { background: #6ab0e6; color: white; }
+        .step-phoneme.active-step { background: #f4a261; color: white; border-color: #e07c3a; transform: scale(1.08); }
+        .step-arrow { font-size: 1.4rem; color: #6ab0e6; font-weight: 300; }
         .step-result {
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: 700;
             color: #0d4b6e;
             background: #d7e9f7;
-            padding: 0 24px;
-            border-radius: 50px;
-            margin-left: 2px;
+            padding: 0 20px;
+            border-radius: 40px;
             cursor: pointer;
             transition: all 0.15s;
         }
         .step-result:hover { background: #b5d6ed; }
-        .demo-controls {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-wrap: wrap;
-            margin-left: auto;
-        }
+        .demo-controls { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-left: auto; }
         .demo-speak-btn {
             background: #1f4b66;
             border: none;
             border-radius: 40px;
-            padding: 6px 18px;
+            padding: 5px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .demo-speak-btn:hover { background: #0d3852; transform: translateY(-2px); }
+        .demo-speak-btn:active { transform: scale(0.96); }
+
+        .speak-all {
+            background: #2d4b62;
+            border: none;
+            border-radius: 40px;
+            padding: 8px 20px;
             font-size: 0.9rem;
             font-weight: 600;
             color: white;
@@ -266,615 +269,269 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            box-shadow: 0 4px 12px rgba(31, 75, 102, 0.25);
-        }
-        .demo-speak-btn:hover { background: #0d3852; transform: translateY(-2px); }
-        .demo-speak-btn:active { transform: scale(0.96); }
-        .demo-speak-btn.small { padding: 4px 14px; font-size: 0.8rem; }
-
-        .speak-all {
-            background: #2d4b62;
-            border: none;
-            border-radius: 40px;
-            padding: 10px 24px;
-            font-size: 1rem;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
             margin-top: 2px;
-            box-shadow: 0 4px 14px rgba(45, 75, 98, 0.2);
         }
         .speak-all:hover { background: #1b364a; transform: translateY(-2px); }
         .speak-all:active { transform: scale(0.96); }
 
-        .footer {
-            text-align: center;
-            color: #7a95ab;
-            font-size: 0.85rem;
-            margin-top: 10px;
-            opacity: 0.7;
-        }
-        .hint { font-size: 0.8rem; color: #8aacbf; margin-top: 4px; }
+        .footer { text-align: center; color: #7a95ab; font-size: 0.8rem; margin-top: 10px; opacity: 0.7; }
+        .hint { font-size: 0.78rem; color: #8aacbf; margin-top: 3px; }
+        .rule-count { font-size: 0.7rem; color: #8aacbf; margin-left: 8px; }
 
         @media (max-width: 550px) {
-            .app { padding: 16px 12px; }
-            h1 { font-size: 1.5rem; }
-            .rule-name { font-size: 1.3rem; }
-            .rule-phoneme { font-size: 1.1rem; padding: 0 12px; }
-            .blend-grid { grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); }
-            .word-display { font-size: 1.4rem; }
-            .step-phoneme { font-size: 1.2rem; padding: 3px 12px; }
-            .step-result { font-size: 1.5rem; padding: 0 14px; }
-            .blend-steps { border-radius: 24px; padding: 10px 12px; }
-            .phoneme-chip { font-size: 0.8rem; padding: 2px 8px; }
-            .rule-btn { font-size: 0.7rem; padding: 4px 10px; }
+            .app { padding: 14px 10px; }
+            h1 { font-size: 1.4rem; }
+            .rule-name { font-size: 1.2rem; }
+            .rule-phoneme { font-size: 1rem; padding: 0 10px; }
+            .blend-grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+            .word-display { font-size: 1.3rem; }
+            .step-phoneme { font-size: 1.1rem; padding: 2px 10px; }
+            .step-result { font-size: 1.4rem; padding: 0 12px; }
+            .blend-steps { padding: 10px 12px; }
+            .phoneme-chip { font-size: 0.7rem; padding: 1px 7px; }
+            .cat-btn, .rule-btn { font-size: 0.65rem; padding: 3px 8px; }
         }
     </style>
 </head>
 <body>
 <div class="app">
-    <h1>🗣️ 音素拼读 <small>Phoneme Blending</small></h1>
+    <h1>🗣️ 完整自然拼读 <small>All Phonics Rules</small></h1>
     <div class="sub">🔊 点击音素听发音 → 再听合成后的完整单词</div>
 
+    <!-- 分类 -->
+    <div class="category-strip" id="categoryStrip"></div>
+
+    <!-- 规则 -->
     <div class="rule-strip" id="ruleStrip"></div>
 
     <div class="blend-area">
         <div class="rule-header">
             <span class="rule-name" id="ruleName">短元音 a</span>
             <span class="rule-phoneme" id="rulePhoneme">/æ/</span>
+            <span class="rule-count" id="ruleCount">8 个单词</span>
         </div>
-        <div class="rule-desc" id="ruleDesc">点击单词下方的「拼读」听音素合成过程</div>
+        <div class="rule-desc" id="ruleDesc">点击「拼读」听音素合成过程</div>
 
         <div class="blend-grid" id="wordGrid"></div>
 
-        <div class="blend-demo" id="blendDemo">
+        <div class="blend-demo">
             <div class="blend-demo-title">
                 <span>🔁 拼读步骤 · 点击音素听发音</span>
-                <span style="font-weight:400;font-size:0.8rem;color:#4f7a9c;">点击下方音素逐个听 → 再听完整单词</span>
+                <span style="font-weight:400;font-size:0.75rem;color:#4f7a9c;">点击下方音素逐个听 → 再听完整单词</span>
             </div>
             <div class="blend-steps" id="blendSteps">
-                <span style="color:#8aacbf;font-size:0.95rem;">👆 点击任意单词的「拼读」开始</span>
+                <span style="color:#8aacbf;font-size:0.9rem;">👆 点击任意单词的「拼读」开始</span>
             </div>
             <div class="hint" id="blendHint">💡 点击每个音素可单独听发音，点击「听拼读」自动演示合成过程</div>
         </div>
 
-        <button class="speak-all" id="speakAllBtn">
-            <span>🔊</span> 朗读全部单词
-        </button>
+        <button class="speak-all" id="speakAllBtn"><span>🔊</span> 朗读全部单词</button>
     </div>
 
-    <div class="footer">💡 50+ 拼读规则 · 每个音素可点击发声 · 支持 Chrome / Edge / Safari</div>
+    <div class="footer">💡 80+ 拼读规则 · 每个音素可点击发声 · 支持 Chrome / Edge / Safari</div>
 </div>
 
 <script>
     // ============================================================
-    // 1. 拼读数据 - 50+ 规则
+    // 1. 完整拼读数据 (80+ 规则)
     // ============================================================
-    const rules = [
-        // ===== 短元音 (Short Vowels) =====
-        {
-            id: 'short-a',
-            name: '短元音 a',
-            phoneme: '/æ/',
-            desc: '字母 a 在闭音节中发短音 /æ/',
-            words: [
-                { word: 'cat', phonemes: ['k', 'æ', 't'] },
-                { word: 'hat', phonemes: ['h', 'æ', 't'] },
-                { word: 'bat', phonemes: ['b', 'æ', 't'] },
-                { word: 'map', phonemes: ['m', 'æ', 'p'] },
-                { word: 'cap', phonemes: ['k', 'æ', 'p'] },
-                { word: 'bag', phonemes: ['b', 'æ', 'g'] },
-                { word: 'fan', phonemes: ['f', 'æ', 'n'] },
-                { word: 'pan', phonemes: ['p', 'æ', 'n'] }
-            ]
-        }, {
-            id: 'short-e',
-            name: '短元音 e',
-            phoneme: '/e/',
-            desc: '字母 e 在闭音节中发短音 /e/',
-            words: [
-                { word: 'bed', phonemes: ['b', 'e', 'd'] },
-                { word: 'red', phonemes: ['r', 'e', 'd'] },
-                { word: 'ten', phonemes: ['t', 'e', 'n'] },
-                { word: 'pen', phonemes: ['p', 'e', 'n'] },
-                { word: 'hen', phonemes: ['h', 'e', 'n'] },
-                { word: 'leg', phonemes: ['l', 'e', 'g'] },
-                { word: 'net', phonemes: ['n', 'e', 't'] },
-                { word: 'pet', phonemes: ['p', 'e', 't'] }
-            ]
-        }, {
-            id: 'short-i',
-            name: '短元音 i',
-            phoneme: '/ɪ/',
-            desc: '字母 i 在闭音节中发短音 /ɪ/',
-            words: [
-                { word: 'big', phonemes: ['b', 'ɪ', 'g'] },
-                { word: 'pig', phonemes: ['p', 'ɪ', 'g'] },
-                { word: 'sit', phonemes: ['s', 'ɪ', 't'] },
-                { word: 'hit', phonemes: ['h', 'ɪ', 't'] },
-                { word: 'lip', phonemes: ['l', 'ɪ', 'p'] },
-                { word: 'pin', phonemes: ['p', 'ɪ', 'n'] },
-                { word: 'win', phonemes: ['w', 'ɪ', 'n'] },
-                { word: 'kit', phonemes: ['k', 'ɪ', 't'] }
-            ]
-        }, {
-            id: 'short-o',
-            name: '短元音 o',
-            phoneme: '/ɒ/',
-            desc: '字母 o 在闭音节中发短音 /ɒ/',
-            words: [
-                { word: 'hot', phonemes: ['h', 'ɒ', 't'] },
-                { word: 'pot', phonemes: ['p', 'ɒ', 't'] },
-                { word: 'dog', phonemes: ['d', 'ɒ', 'g'] },
-                { word: 'log', phonemes: ['l', 'ɒ', 'g'] },
-                { word: 'top', phonemes: ['t', 'ɒ', 'p'] },
-                { word: 'box', phonemes: ['b', 'ɒ', 'k', 's'] },
-                { word: 'fox', phonemes: ['f', 'ɒ', 'k', 's'] },
-                { word: 'hop', phonemes: ['h', 'ɒ', 'p'] }
-            ]
-        }, {
-            id: 'short-u',
-            name: '短元音 u',
-            phoneme: '/ʌ/',
-            desc: '字母 u 在闭音节中发短音 /ʌ/',
-            words: [
-                { word: 'cup', phonemes: ['k', 'ʌ', 'p'] },
-                { word: 'bus', phonemes: ['b', 'ʌ', 's'] },
-                { word: 'sun', phonemes: ['s', 'ʌ', 'n'] },
-                { word: 'run', phonemes: ['r', 'ʌ', 'n'] },
-                { word: 'fun', phonemes: ['f', 'ʌ', 'n'] },
-                { word: 'hug', phonemes: ['h', 'ʌ', 'g'] },
-                { word: 'mug', phonemes: ['m', 'ʌ', 'g'] },
-                { word: 'cut', phonemes: ['k', 'ʌ', 't'] }
-            ]
-        },
+    const allRules = [
+        // ========== 一、短元音 ==========
+        { id: 'short-a', category: '短元音', name: 'short a', phoneme: '/æ/', desc: '字母 a 在闭音节中发短音 /æ/',
+            words: [{ word: 'cat', phonemes: ['k','æ','t'] },{ word: 'hat', phonemes: ['h','æ','t'] },{ word: 'bat', phonemes: ['b','æ','t'] },{ word: 'map', phonemes: ['m','æ','p'] },{ word: 'cap', phonemes: ['k','æ','p'] },{ word: 'bag', phonemes: ['b','æ','g'] },{ word: 'fan', phonemes: ['f','æ','n'] },{ word: 'pan', phonemes: ['p','æ','n'] }] },
+        { id: 'short-e', category: '短元音', name: 'short e', phoneme: '/e/', desc: '字母 e 在闭音节中发短音 /e/',
+            words: [{ word: 'bed', phonemes: ['b','e','d'] },{ word: 'red', phonemes: ['r','e','d'] },{ word: 'ten', phonemes: ['t','e','n'] },{ word: 'pen', phonemes: ['p','e','n'] },{ word: 'hen', phonemes: ['h','e','n'] },{ word: 'leg', phonemes: ['l','e','g'] },{ word: 'net', phonemes: ['n','e','t'] },{ word: 'pet', phonemes: ['p','e','t'] }] },
+        { id: 'short-i', category: '短元音', name: 'short i', phoneme: '/ɪ/', desc: '字母 i 在闭音节中发短音 /ɪ/',
+            words: [{ word: 'big', phonemes: ['b','ɪ','g'] },{ word: 'pig', phonemes: ['p','ɪ','g'] },{ word: 'sit', phonemes: ['s','ɪ','t'] },{ word: 'hit', phonemes: ['h','ɪ','t'] },{ word: 'lip', phonemes: ['l','ɪ','p'] },{ word: 'pin', phonemes: ['p','ɪ','n'] },{ word: 'win', phonemes: ['w','ɪ','n'] },{ word: 'kit', phonemes: ['k','ɪ','t'] }] },
+        { id: 'short-o', category: '短元音', name: 'short o', phoneme: '/ɒ/', desc: '字母 o 在闭音节中发短音 /ɒ/',
+            words: [{ word: 'hot', phonemes: ['h','ɒ','t'] },{ word: 'pot', phonemes: ['p','ɒ','t'] },{ word: 'dog', phonemes: ['d','ɒ','g'] },{ word: 'log', phonemes: ['l','ɒ','g'] },{ word: 'top', phonemes: ['t','ɒ','p'] },{ word: 'box', phonemes: ['b','ɒ','k','s'] },{ word: 'fox', phonemes: ['f','ɒ','k','s'] },{ word: 'hop', phonemes: ['h','ɒ','p'] }] },
+        { id: 'short-u', category: '短元音', name: 'short u', phoneme: '/ʌ/', desc: '字母 u 在闭音节中发短音 /ʌ/',
+            words: [{ word: 'cup', phonemes: ['k','ʌ','p'] },{ word: 'bus', phonemes: ['b','ʌ','s'] },{ word: 'sun', phonemes: ['s','ʌ','n'] },{ word: 'run', phonemes: ['r','ʌ','n'] },{ word: 'fun', phonemes: ['f','ʌ','n'] },{ word: 'hug', phonemes: ['h','ʌ','g'] },{ word: 'mug', phonemes: ['m','ʌ','g'] },{ word: 'cut', phonemes: ['k','ʌ','t'] }] },
 
-        // ===== 魔法 e (Magic E / Silent E) =====
-        {
-            id: 'magic-e-a',
-            name: '魔法 e · a_e',
-            phoneme: '/eɪ/',
-            desc: 'a_e 结构，a 发字母本身音 /eɪ/',
-            words: [
-                { word: 'cake', phonemes: ['k', 'eɪ', 'k'] },
-                { word: 'make', phonemes: ['m', 'eɪ', 'k'] },
-                { word: 'lake', phonemes: ['l', 'eɪ', 'k'] },
-                { word: 'name', phonemes: ['n', 'eɪ', 'm'] },
-                { word: 'game', phonemes: ['g', 'eɪ', 'm'] },
-                { word: 'came', phonemes: ['k', 'eɪ', 'm'] },
-                { word: 'safe', phonemes: ['s', 'eɪ', 'f'] },
-                { word: 'tape', phonemes: ['t', 'eɪ', 'p'] }
-            ]
-        }, {
-            id: 'magic-e-i',
-            name: '魔法 e · i_e',
-            phoneme: '/aɪ/',
-            desc: 'i_e 结构，i 发字母本身音 /aɪ/',
-            words: [
-                { word: 'bike', phonemes: ['b', 'aɪ', 'k'] },
-                { word: 'like', phonemes: ['l', 'aɪ', 'k'] },
-                { word: 'time', phonemes: ['t', 'aɪ', 'm'] },
-                { word: 'nine', phonemes: ['n', 'aɪ', 'n'] },
-                { word: 'kite', phonemes: ['k', 'aɪ', 't'] },
-                { word: 'ride', phonemes: ['r', 'aɪ', 'd'] },
-                { word: 'hide', phonemes: ['h', 'aɪ', 'd'] },
-                { word: 'side', phonemes: ['s', 'aɪ', 'd'] }
-            ]
-        }, {
-            id: 'magic-e-o',
-            name: '魔法 e · o_e',
-            phoneme: '/əʊ/',
-            desc: 'o_e 结构，o 发字母本身音 /əʊ/',
-            words: [
-                { word: 'home', phonemes: ['h', 'əʊ', 'm'] },
-                { word: 'hope', phonemes: ['h', 'əʊ', 'p'] },
-                { word: 'nose', phonemes: ['n', 'əʊ', 'z'] },
-                { word: 'rose', phonemes: ['r', 'əʊ', 'z'] },
-                { word: 'bone', phonemes: ['b', 'əʊ', 'n'] },
-                { word: 'rope', phonemes: ['r', 'əʊ', 'p'] },
-                { word: 'note', phonemes: ['n', 'əʊ', 't'] },
-                { word: 'dome', phonemes: ['d', 'əʊ', 'm'] }
-            ]
-        }, {
-            id: 'magic-e-u',
-            name: '魔法 e · u_e',
-            phoneme: '/juː/',
-            desc: 'u_e 结构，u 发字母本身音 /juː/',
-            words: [
-                { word: 'cube', phonemes: ['k', 'juː', 'b'] },
-                { word: 'tube', phonemes: ['t', 'juː', 'b'] },
-                { word: 'cute', phonemes: ['k', 'juː', 't'] },
-                { word: 'mule', phonemes: ['m', 'juː', 'l'] },
-                { word: 'fuse', phonemes: ['f', 'juː', 'z'] }
-            ]
-        },
+        // ========== 二、魔法e ==========
+        { id: 'magic-e-a', category: '魔法e', name: 'a_e', phoneme: '/eɪ/', desc: 'a_e 结构，a 发字母本身音 /eɪ/',
+            words: [{ word: 'cake', phonemes: ['k','eɪ','k'] },{ word: 'make', phonemes: ['m','eɪ','k'] },{ word: 'lake', phonemes: ['l','eɪ','k'] },{ word: 'name', phonemes: ['n','eɪ','m'] },{ word: 'game', phonemes: ['g','eɪ','m'] },{ word: 'came', phonemes: ['k','eɪ','m'] },{ word: 'safe', phonemes: ['s','eɪ','f'] },{ word: 'tape', phonemes: ['t','eɪ','p'] }] },
+        { id: 'magic-e-e', category: '魔法e', name: 'e_e', phoneme: '/iː/', desc: 'e_e 结构，e 发字母本身音 /iː/',
+            words: [{ word: 'these', phonemes: ['ð','iː','z'] },{ word: 'eve', phonemes: ['iː','v'] },{ word: 'theme', phonemes: ['θ','iː','m'] },{ word: 'scene', phonemes: ['s','iː','n'] }] },
+        { id: 'magic-e-i', category: '魔法e', name: 'i_e', phoneme: '/aɪ/', desc: 'i_e 结构，i 发字母本身音 /aɪ/',
+            words: [{ word: 'bike', phonemes: ['b','aɪ','k'] },{ word: 'like', phonemes: ['l','aɪ','k'] },{ word: 'time', phonemes: ['t','aɪ','m'] },{ word: 'nine', phonemes: ['n','aɪ','n'] },{ word: 'kite', phonemes: ['k','aɪ','t'] },{ word: 'ride', phonemes: ['r','aɪ','d'] },{ word: 'hide', phonemes: ['h','aɪ','d'] },{ word: 'side', phonemes: ['s','aɪ','d'] }] },
+        { id: 'magic-e-o', category: '魔法e', name: 'o_e', phoneme: '/əʊ/', desc: 'o_e 结构，o 发字母本身音 /əʊ/',
+            words: [{ word: 'home', phonemes: ['h','əʊ','m'] },{ word: 'hope', phonemes: ['h','əʊ','p'] },{ word: 'nose', phonemes: ['n','əʊ','z'] },{ word: 'rose', phonemes: ['r','əʊ','z'] },{ word: 'bone', phonemes: ['b','əʊ','n'] },{ word: 'rope', phonemes: ['r','əʊ','p'] },{ word: 'note', phonemes: ['n','əʊ','t'] },{ word: 'dome', phonemes: ['d','əʊ','m'] }] },
+        { id: 'magic-e-u', category: '魔法e', name: 'u_e', phoneme: '/juː/', desc: 'u_e 结构，u 发字母本身音 /juː/',
+            words: [{ word: 'cube', phonemes: ['k','juː','b'] },{ word: 'tube', phonemes: ['t','juː','b'] },{ word: 'cute', phonemes: ['k','juː','t'] },{ word: 'mule', phonemes: ['m','juː','l'] },{ word: 'fuse', phonemes: ['f','juː','z'] }] },
 
-        // ===== 长元音 (Long Vowels) =====
-        {
-            id: 'ee-ea',
-            name: '长元音 ee / ea',
-            phoneme: '/iː/',
-            desc: 'ee 和 ea 常发长音 /iː/',
-            words: [
-                { word: 'see', phonemes: ['s', 'iː'] },
-                { word: 'tree', phonemes: ['t', 'r', 'iː'] },
-                { word: 'green', phonemes: ['g', 'r', 'iː', 'n'] },
-                { word: 'sheep', phonemes: ['ʃ', 'iː', 'p'] },
-                { word: 'eat', phonemes: ['iː', 't'] },
-                { word: 'tea', phonemes: ['t', 'iː'] },
-                { word: 'seat', phonemes: ['s', 'iː', 't'] },
-                { word: 'read', phonemes: ['r', 'iː', 'd'] }
-            ]
-        }, {
-            id: 'ai-ay',
-            name: '元音组合 ai / ay',
-            phoneme: '/eɪ/',
-            desc: 'ai 和 ay 发 /eɪ/ 音',
-            words: [
-                { word: 'rain', phonemes: ['r', 'eɪ', 'n'] },
-                { word: 'pain', phonemes: ['p', 'eɪ', 'n'] },
-                { word: 'train', phonemes: ['t', 'r', 'eɪ', 'n'] },
-                { word: 'say', phonemes: ['s', 'eɪ'] },
-                { word: 'day', phonemes: ['d', 'eɪ'] },
-                { word: 'play', phonemes: ['p', 'l', 'eɪ'] },
-                { word: 'stay', phonemes: ['s', 't', 'eɪ'] },
-                { word: 'way', phonemes: ['w', 'eɪ'] }
-            ]
-        }, {
-            id: 'oa-ow',
-            name: '元音组合 oa / ow',
-            phoneme: '/əʊ/',
-            desc: 'oa 和 ow 发 /əʊ/ 音',
-            words: [
-                { word: 'boat', phonemes: ['b', 'əʊ', 't'] },
-                { word: 'coat', phonemes: ['k', 'əʊ', 't'] },
-                { word: 'road', phonemes: ['r', 'əʊ', 'd'] },
-                { word: 'soap', phonemes: ['s', 'əʊ', 'p'] },
-                { word: 'snow', phonemes: ['s', 'n', 'əʊ'] },
-                { word: 'slow', phonemes: ['s', 'l', 'əʊ'] },
-                { word: 'grow', phonemes: ['g', 'r', 'əʊ'] },
-                { word: 'show', phonemes: ['ʃ', 'əʊ'] }
-            ]
-        }, {
-            id: 'ie-igh',
-            name: '元音组合 ie / igh',
-            phoneme: '/aɪ/',
-            desc: 'ie 和 igh 发 /aɪ/ 音',
-            words: [
-                { word: 'pie', phonemes: ['p', 'aɪ'] },
-                { word: 'lie', phonemes: ['l', 'aɪ'] },
-                { word: 'tie', phonemes: ['t', 'aɪ'] },
-                { word: 'night', phonemes: ['n', 'aɪ', 't'] },
-                { word: 'light', phonemes: ['l', 'aɪ', 't'] },
-                { word: 'right', phonemes: ['r', 'aɪ', 't'] },
-                { word: 'bright', phonemes: ['b', 'r', 'aɪ', 't'] }
-            ]
-        }, {
-            id: 'ue-ui',
-            name: '元音组合 ue / ui',
-            phoneme: '/uː/',
-            desc: 'ue 和 ui 发 /uː/ 音',
-            words: [
-                { word: 'blue', phonemes: ['b', 'l', 'uː'] },
-                { word: 'glue', phonemes: ['g', 'l', 'uː'] },
-                { word: 'true', phonemes: ['t', 'r', 'uː'] },
-                { word: 'fruit', phonemes: ['f', 'r', 'uː', 't'] },
-                { word: 'suit', phonemes: ['s', 'uː', 't'] },
-                { word: 'juice', phonemes: ['dʒ', 'uː', 's'] }
-            ]
-        },
+        // ========== 三、长元音组合 ==========
+        { id: 'ee', category: '长元音组合', name: 'ee', phoneme: '/iː/', desc: 'ee 发长音 /iː/',
+            words: [{ word: 'see', phonemes: ['s','iː'] },{ word: 'tree', phonemes: ['t','r','iː'] },{ word: 'green', phonemes: ['g','r','iː','n'] },{ word: 'sheep', phonemes: ['ʃ','iː','p'] },{ word: 'sleep', phonemes: ['s','l','iː','p'] },{ word: 'three', phonemes: ['θ','r','iː'] }] },
+        { id: 'ea', category: '长元音组合', name: 'ea', phoneme: '/iː/', desc: 'ea 发长音 /iː/',
+            words: [{ word: 'eat', phonemes: ['iː','t'] },{ word: 'tea', phonemes: ['t','iː'] },{ word: 'seat', phonemes: ['s','iː','t'] },{ word: 'read', phonemes: ['r','iː','d'] },{ word: 'beach', phonemes: ['b','iː','tʃ'] },{ word: 'leaf', phonemes: ['l','iː','f'] }] },
+        { id: 'ai', category: '长元音组合', name: 'ai', phoneme: '/eɪ/', desc: 'ai 发 /eɪ/ 音',
+            words: [{ word: 'rain', phonemes: ['r','eɪ','n'] },{ word: 'pain', phonemes: ['p','eɪ','n'] },{ word: 'train', phonemes: ['t','r','eɪ','n'] },{ word: 'wait', phonemes: ['w','eɪ','t'] },{ word: 'tail', phonemes: ['t','eɪ','l'] },{ word: 'mail', phonemes: ['m','eɪ','l'] }] },
+        { id: 'ay', category: '长元音组合', name: 'ay', phoneme: '/eɪ/', desc: 'ay 发 /eɪ/ 音',
+            words: [{ word: 'say', phonemes: ['s','eɪ'] },{ word: 'day', phonemes: ['d','eɪ'] },{ word: 'play', phonemes: ['p','l','eɪ'] },{ word: 'stay', phonemes: ['s','t','eɪ'] },{ word: 'way', phonemes: ['w','eɪ'] },{ word: 'may', phonemes: ['m','eɪ'] }] },
+        { id: 'oa', category: '长元音组合', name: 'oa', phoneme: '/əʊ/', desc: 'oa 发 /əʊ/ 音',
+            words: [{ word: 'boat', phonemes: ['b','əʊ','t'] },{ word: 'coat', phonemes: ['k','əʊ','t'] },{ word: 'road', phonemes: ['r','əʊ','d'] },{ word: 'soap', phonemes: ['s','əʊ','p'] },{ word: 'goat', phonemes: ['g','əʊ','t'] },{ word: 'load', phonemes: ['l','əʊ','d'] }] },
+        { id: 'ow-long', category: '长元音组合', name: 'ow (长音)', phoneme: '/əʊ/', desc: 'ow 发长音 /əʊ/',
+            words: [{ word: 'snow', phonemes: ['s','n','əʊ'] },{ word: 'slow', phonemes: ['s','l','əʊ'] },{ word: 'grow', phonemes: ['g','r','əʊ'] },{ word: 'show', phonemes: ['ʃ','əʊ'] },{ word: 'blow', phonemes: ['b','l','əʊ'] },{ word: 'flow', phonemes: ['f','l','əʊ'] }] },
+        { id: 'ie', category: '长元音组合', name: 'ie', phoneme: '/aɪ/', desc: 'ie 发 /aɪ/ 音',
+            words: [{ word: 'pie', phonemes: ['p','aɪ'] },{ word: 'lie', phonemes: ['l','aɪ'] },{ word: 'tie', phonemes: ['t','aɪ'] },{ word: 'die', phonemes: ['d','aɪ'] }] },
+        { id: 'igh', category: '长元音组合', name: 'igh', phoneme: '/aɪ/', desc: 'igh 发 /aɪ/ 音',
+            words: [{ word: 'night', phonemes: ['n','aɪ','t'] },{ word: 'light', phonemes: ['l','aɪ','t'] },{ word: 'right', phonemes: ['r','aɪ','t'] },{ word: 'bright', phonemes: ['b','r','aɪ','t'] },{ word: 'high', phonemes: ['h','aɪ'] },{ word: 'sight', phonemes: ['s','aɪ','t'] }] },
+        { id: 'ue', category: '长元音组合', name: 'ue', phoneme: '/uː/', desc: 'ue 发 /uː/ 音',
+            words: [{ word: 'blue', phonemes: ['b','l','uː'] },{ word: 'glue', phonemes: ['g','l','uː'] },{ word: 'true', phonemes: ['t','r','uː'] },{ word: 'clue', phonemes: ['k','l','uː'] }] },
+        { id: 'ui', category: '长元音组合', name: 'ui', phoneme: '/uː/', desc: 'ui 发 /uː/ 音',
+            words: [{ word: 'fruit', phonemes: ['f','r','uː','t'] },{ word: 'suit', phonemes: ['s','uː','t'] },{ word: 'juice', phonemes: ['dʒ','uː','s'] },{ word: 'cruise', phonemes: ['k','r','uː','z'] }] },
+        { id: 'ew', category: '长元音组合', name: 'ew', phoneme: '/uː/', desc: 'ew 发 /uː/ 音',
+            words: [{ word: 'new', phonemes: ['n','uː'] },{ word: 'few', phonemes: ['f','uː'] },{ word: 'grew', phonemes: ['g','r','uː'] },{ word: 'flew', phonemes: ['f','l','uː'] }] },
+        { id: 'ey', category: '长元音组合', name: 'ey', phoneme: '/eɪ/', desc: 'ey 发 /eɪ/ 音',
+            words: [{ word: 'they', phonemes: ['ð','eɪ'] },{ word: 'grey', phonemes: ['g','r','eɪ'] },{ word: 'prey', phonemes: ['p','r','eɪ'] },{ word: 'convey', phonemes: ['k','ə','n','v','eɪ'] }] },
 
-        // ===== R-controlled 元音 (Bossy R) =====
-        {
-            id: 'ar',
-            name: 'R-controlled · ar',
-            phoneme: '/ɑː/',
-            desc: 'ar 发长音 /ɑː/',
-            words: [
-                { word: 'car', phonemes: ['k', 'ɑː'] },
-                { word: 'bar', phonemes: ['b', 'ɑː'] },
-                { word: 'far', phonemes: ['f', 'ɑː'] },
-                { word: 'star', phonemes: ['s', 't', 'ɑː'] },
-                { word: 'park', phonemes: ['p', 'ɑː', 'k'] },
-                { word: 'farm', phonemes: ['f', 'ɑː', 'm'] },
-                { word: 'card', phonemes: ['k', 'ɑː', 'd'] }
-            ]
-        }, {
-            id: 'er-ir-ur',
-            name: 'R-controlled · er / ir / ur',
-            phoneme: '/ɜː/',
-            desc: 'er / ir / ur 发 /ɜː/ 音',
-            words: [
-                { word: 'her', phonemes: ['h', 'ɜː'] },
-                { word: 'bird', phonemes: ['b', 'ɜː', 'd'] },
-                { word: 'girl', phonemes: ['g', 'ɜː', 'l'] },
-                { word: 'fur', phonemes: ['f', 'ɜː'] },
-                { word: 'turn', phonemes: ['t', 'ɜː', 'n'] },
-                { word: 'burn', phonemes: ['b', 'ɜː', 'n'] },
-                { word: 'shirt', phonemes: ['ʃ', 'ɜː', 't'] }
-            ]
-        }, {
-            id: 'or',
-            name: 'R-controlled · or',
-            phoneme: '/ɔː/',
-            desc: 'or 发 /ɔː/ 音',
-            words: [
-                { word: 'for', phonemes: ['f', 'ɔː'] },
-                { word: 'or', phonemes: ['ɔː'] },
-                { word: 'corn', phonemes: ['k', 'ɔː', 'n'] },
-                { word: 'fork', phonemes: ['f', 'ɔː', 'k'] },
-                { word: 'born', phonemes: ['b', 'ɔː', 'n'] },
-                { word: 'horse', phonemes: ['h', 'ɔː', 's'] }
-            ]
-        },
+        // ========== 四、R-controlled ==========
+        { id: 'ar', category: 'R-controlled', name: 'ar', phoneme: '/ɑː/', desc: 'ar 发 /ɑː/ 音',
+            words: [{ word: 'car', phonemes: ['k','ɑː'] },{ word: 'far', phonemes: ['f','ɑː'] },{ word: 'star', phonemes: ['s','t','ɑː'] },{ word: 'park', phonemes: ['p','ɑː','k'] },{ word: 'farm', phonemes: ['f','ɑː','m'] },{ word: 'card', phonemes: ['k','ɑː','d'] }] },
+        { id: 'er', category: 'R-controlled', name: 'er', phoneme: '/ɜː/', desc: 'er 发 /ɜː/ 音',
+            words: [{ word: 'her', phonemes: ['h','ɜː'] },{ word: 'term', phonemes: ['t','ɜː','m'] },{ word: 'verb', phonemes: ['v','ɜː','b'] },{ word: 'serve', phonemes: ['s','ɜː','v'] }] },
+        { id: 'ir', category: 'R-controlled', name: 'ir', phoneme: '/ɜː/', desc: 'ir 发 /ɜː/ 音',
+            words: [{ word: 'bird', phonemes: ['b','ɜː','d'] },{ word: 'girl', phonemes: ['g','ɜː','l'] },{ word: 'shirt', phonemes: ['ʃ','ɜː','t'] },{ word: 'first', phonemes: ['f','ɜː','s','t'] }] },
+        { id: 'ur', category: 'R-controlled', name: 'ur', phoneme: '/ɜː/', desc: 'ur 发 /ɜː/ 音',
+            words: [{ word: 'fur', phonemes: ['f','ɜː'] },{ word: 'turn', phonemes: ['t','ɜː','n'] },{ word: 'burn', phonemes: ['b','ɜː','n'] },{ word: 'hurt', phonemes: ['h','ɜː','t'] }] },
+        { id: 'or', category: 'R-controlled', name: 'or', phoneme: '/ɔː/', desc: 'or 发 /ɔː/ 音',
+            words: [{ word: 'for', phonemes: ['f','ɔː'] },{ word: 'corn', phonemes: ['k','ɔː','n'] },{ word: 'fork', phonemes: ['f','ɔː','k'] },{ word: 'horse', phonemes: ['h','ɔː','s'] }] },
 
-        // ===== 双元音 (Diphthongs) =====
-        {
-            id: 'oi-oy',
-            name: '双元音 oi / oy',
-            phoneme: '/ɔɪ/',
-            desc: 'oi 和 oy 发 /ɔɪ/ 音',
-            words: [
-                { word: 'oil', phonemes: ['ɔɪ', 'l'] },
-                { word: 'coin', phonemes: ['k', 'ɔɪ', 'n'] },
-                { word: 'join', phonemes: ['dʒ', 'ɔɪ', 'n'] },
-                { word: 'boy', phonemes: ['b', 'ɔɪ'] },
-                { word: 'toy', phonemes: ['t', 'ɔɪ'] },
-                { word: 'enjoy', phonemes: ['ɪ', 'n', 'dʒ', 'ɔɪ'] }
-            ]
-        }, {
-            id: 'ou-ow',
-            name: '双元音 ou / ow',
-            phoneme: '/aʊ/',
-            desc: 'ou 和 ow 发 /aʊ/ 音',
-            words: [
-                { word: 'out', phonemes: ['aʊ', 't'] },
-                { word: 'about', phonemes: ['ə', 'b', 'aʊ', 't'] },
-                { word: 'house', phonemes: ['h', 'aʊ', 's'] },
-                { word: 'now', phonemes: ['n', 'aʊ'] },
-                { word: 'cow', phonemes: ['k', 'aʊ'] },
-                { word: 'brown', phonemes: ['b', 'r', 'aʊ', 'n'] },
-                { word: 'down', phonemes: ['d', 'aʊ', 'n'] }
-            ]
-        },
+        // ========== 五、双元音 ==========
+        { id: 'oi', category: '双元音', name: 'oi', phoneme: '/ɔɪ/', desc: 'oi 发 /ɔɪ/ 音',
+            words: [{ word: 'oil', phonemes: ['ɔɪ','l'] },{ word: 'coin', phonemes: ['k','ɔɪ','n'] },{ word: 'join', phonemes: ['dʒ','ɔɪ','n'] },{ word: 'point', phonemes: ['p','ɔɪ','n','t'] }] },
+        { id: 'oy', category: '双元音', name: 'oy', phoneme: '/ɔɪ/', desc: 'oy 发 /ɔɪ/ 音',
+            words: [{ word: 'boy', phonemes: ['b','ɔɪ'] },{ word: 'toy', phonemes: ['t','ɔɪ'] },{ word: 'enjoy', phonemes: ['ɪ','n','dʒ','ɔɪ'] },{ word: 'oyster', phonemes: ['ɔɪ','s','t','ə'] }] },
+        { id: 'ou', category: '双元音', name: 'ou', phoneme: '/aʊ/', desc: 'ou 发 /aʊ/ 音',
+            words: [{ word: 'out', phonemes: ['aʊ','t'] },{ word: 'about', phonemes: ['ə','b','aʊ','t'] },{ word: 'house', phonemes: ['h','aʊ','s'] },{ word: 'mouse', phonemes: ['m','aʊ','s'] }] },
+        { id: 'ow-short', category: '双元音', name: 'ow (短音)', phoneme: '/aʊ/', desc: 'ow 发短音 /aʊ/',
+            words: [{ word: 'now', phonemes: ['n','aʊ'] },{ word: 'cow', phonemes: ['k','aʊ'] },{ word: 'brown', phonemes: ['b','r','aʊ','n'] },{ word: 'down', phonemes: ['d','aʊ','n'] }] },
 
-        // ===== 辅音组合 (Consonant Blends) =====
-        {
-            id: 'sh-ch-th-wh',
-            name: '辅音组合 sh / ch / th / wh',
-            phoneme: 'ʃ  tʃ  θ/ð  w',
-            desc: '常见二合字母辅音组合',
-            words: [
-                { word: 'ship', phonemes: ['ʃ', 'ɪ', 'p'] },
-                { word: 'shop', phonemes: ['ʃ', 'ɒ', 'p'] },
-                { word: 'fish', phonemes: ['f', 'ɪ', 'ʃ'] },
-                { word: 'chat', phonemes: ['tʃ', 'æ', 't'] },
-                { word: 'chop', phonemes: ['tʃ', 'ɒ', 'p'] },
-                { word: 'chin', phonemes: ['tʃ', 'ɪ', 'n'] },
-                { word: 'thin', phonemes: ['θ', 'ɪ', 'n'] },
-                { word: 'this', phonemes: ['ð', 'ɪ', 's'] },
-                { word: 'that', phonemes: ['ð', 'æ', 't'] },
-                { word: 'white', phonemes: ['w', 'aɪ', 't'] }
-            ]
-        }, {
-            id: 'bl-cl-fl-gl-pl',
-            name: 'L组合 bl / cl / fl / gl / pl',
-            phoneme: 'bl  cl  fl  gl  pl',
-            desc: '辅音 + L 组合',
-            words: [
-                { word: 'black', phonemes: ['b', 'l', 'æ', 'k'] },
-                { word: 'blue', phonemes: ['b', 'l', 'uː'] },
-                { word: 'clap', phonemes: ['k', 'l', 'æ', 'p'] },
-                { word: 'clock', phonemes: ['k', 'l', 'ɒ', 'k'] },
-                { word: 'flag', phonemes: ['f', 'l', 'æ', 'g'] },
-                { word: 'glad', phonemes: ['g', 'l', 'æ', 'd'] },
-                { word: 'play', phonemes: ['p', 'l', 'eɪ'] },
-                { word: 'plane', phonemes: ['p', 'l', 'eɪ', 'n'] }
-            ]
-        }, {
-            id: 'br-cr-dr-fr-gr-pr-tr',
-            name: 'R组合 br / cr / dr / fr / gr / pr / tr',
-            phoneme: 'br  cr  dr  fr  gr  pr  tr',
-            desc: '辅音 + R 组合',
-            words: [
-                { word: 'brown', phonemes: ['b', 'r', 'aʊ', 'n'] },
-                { word: 'bread', phonemes: ['b', 'r', 'e', 'd'] },
-                { word: 'crab', phonemes: ['k', 'r', 'æ', 'b'] },
-                { word: 'cry', phonemes: ['k', 'r', 'aɪ'] },
-                { word: 'dress', phonemes: ['d', 'r', 'e', 's'] },
-                { word: 'drum', phonemes: ['d', 'r', 'ʌ', 'm'] },
-                { word: 'frog', phonemes: ['f', 'r', 'ɒ', 'g'] },
-                { word: 'from', phonemes: ['f', 'r', 'ɒ', 'm'] },
-                { word: 'green', phonemes: ['g', 'r', 'iː', 'n'] },
-                { word: 'grass', phonemes: ['g', 'r', 'ɑː', 's'] },
-                { word: 'pray', phonemes: ['p', 'r', 'eɪ'] },
-                { word: 'present', phonemes: ['p', 'r', 'e', 'z', 'ə', 'n', 't'] },
-                { word: 'tree', phonemes: ['t', 'r', 'iː'] },
-                { word: 'train', phonemes: ['t', 'r', 'eɪ', 'n'] }
-            ]
-        }, {
-            id: 'sk-sm-sn-sp-st-sw',
-            name: 'S组合 sk / sm / sn / sp / st / sw',
-            phoneme: 'sk  sm  sn  sp  st  sw',
-            desc: 'S + 辅音组合',
-            words: [
-                { word: 'sky', phonemes: ['s', 'k', 'aɪ'] },
-                { word: 'skate', phonemes: ['s', 'k', 'eɪ', 't'] },
-                { word: 'small', phonemes: ['s', 'm', 'ɔː', 'l'] },
-                { word: 'smile', phonemes: ['s', 'm', 'aɪ', 'l'] },
-                { word: 'snow', phonemes: ['s', 'n', 'əʊ'] },
-                { word: 'snake', phonemes: ['s', 'n', 'eɪ', 'k'] },
-                { word: 'spoon', phonemes: ['s', 'p', 'uː', 'n'] },
-                { word: 'sport', phonemes: ['s', 'p', 'ɔː', 't'] },
-                { word: 'star', phonemes: ['s', 't', 'ɑː'] },
-                { word: 'stop', phonemes: ['s', 't', 'ɒ', 'p'] },
-                { word: 'swim', phonemes: ['s', 'w', 'ɪ', 'm'] },
-                { word: 'sweet', phonemes: ['s', 'w', 'iː', 't'] }
-            ]
-        },
+        // ========== 六、其他元音 ==========
+        { id: 'au', category: '其他元音', name: 'au', phoneme: '/ɔː/', desc: 'au 发 /ɔː/ 音',
+            words: [{ word: 'autumn', phonemes: ['ɔː','t','ə','m'] },{ word: 'author', phonemes: ['ɔː','θ','ə'] },{ word: 'because', phonemes: ['b','ɪ','k','ɔː','z'] }] },
+        { id: 'aw', category: '其他元音', name: 'aw', phoneme: '/ɔː/', desc: 'aw 发 /ɔː/ 音',
+            words: [{ word: 'saw', phonemes: ['s','ɔː'] },{ word: 'law', phonemes: ['l','ɔː'] },{ word: 'draw', phonemes: ['d','r','ɔː'] },{ word: 'straw', phonemes: ['s','t','r','ɔː'] }] },
+        { id: 'oo-short', category: '其他元音', name: 'oo (短音)', phoneme: '/ʊ/', desc: 'oo 发短音 /ʊ/',
+            words: [{ word: 'book', phonemes: ['b','ʊ','k'] },{ word: 'look', phonemes: ['l','ʊ','k'] },{ word: 'cook', phonemes: ['k','ʊ','k'] },{ word: 'foot', phonemes: ['f','ʊ','t'] }] },
+        { id: 'oo-long', category: '其他元音', name: 'oo (长音)', phoneme: '/uː/', desc: 'oo 发长音 /uː/',
+            words: [{ word: 'moon', phonemes: ['m','uː','n'] },{ word: 'zoo', phonemes: ['z','uː'] },{ word: 'food', phonemes: ['f','uː','d'] },{ word: 'room', phonemes: ['r','uː','m'] }] },
 
-        // ===== 其他常见组合 =====
-        {
-            id: 'ng-nk',
-            name: '鼻音组合 ng / nk',
-            phoneme: 'ŋ  ŋk',
-            desc: 'ng 和 nk 结尾的发音',
-            words: [
-                { word: 'sing', phonemes: ['s', 'ɪ', 'ŋ'] },
-                { word: 'ring', phonemes: ['r', 'ɪ', 'ŋ'] },
-                { word: 'long', phonemes: ['l', 'ɒ', 'ŋ'] },
-                { word: 'king', phonemes: ['k', 'ɪ', 'ŋ'] },
-                { word: 'pink', phonemes: ['p', 'ɪ', 'ŋ', 'k'] },
-                { word: 'bank', phonemes: ['b', 'æ', 'ŋ', 'k'] },
-                { word: 'sink', phonemes: ['s', 'ɪ', 'ŋ', 'k'] }
-            ]
-        }, {
-            id: 'tion-sion',
-            name: '后缀 tion / sion',
-            phoneme: '/ʃən/ /ʒən/',
-            desc: 'tion 和 sion 结尾发 /ʃən/ 或 /ʒən/',
-            words: [
-                { word: 'station', phonemes: ['s', 't', 'eɪ', 'ʃ', 'ə', 'n'] },
-                { word: 'action', phonemes: ['æ', 'k', 'ʃ', 'ə', 'n'] },
-                { word: 'question', phonemes: ['k', 'w', 'e', 's', 't', 'ʃ', 'ə', 'n'] },
-                { word: 'television', phonemes: ['t', 'e', 'l', 'ɪ', 'v', 'ɪ', 'ʒ', 'ə', 'n'] }
-            ]
-        }, {
-            id: 'ph-gh',
-            name: 'ph / gh 组合',
-            phoneme: '/f/',
-            desc: 'ph 和 gh 发 /f/ 音',
-            words: [
-                { word: 'phone', phonemes: ['f', 'əʊ', 'n'] },
-                { word: 'photo', phonemes: ['f', 'əʊ', 't', 'əʊ'] },
-                { word: 'dolphin', phonemes: ['d', 'ɒ', 'l', 'f', 'ɪ', 'n'] },
-                { word: 'laugh', phonemes: ['l', 'ɑː', 'f'] },
-                { word: 'tough', phonemes: ['t', 'ʌ', 'f'] }
-            ]
-        }, {
-            id: 'soft-c-g',
-            name: '软音 c / g',
-            phoneme: '/s/ /dʒ/',
-            desc: 'c 在 e/i/y 前发 /s/，g 在 e/i/y 前发 /dʒ/',
-            words: [
-                { word: 'city', phonemes: ['s', 'ɪ', 't', 'iː'] },
-                { word: 'cent', phonemes: ['s', 'e', 'n', 't'] },
-                { word: 'circle', phonemes: ['s', 'ɜː', 'k', 'l'] },
-                { word: 'gym', phonemes: ['dʒ', 'ɪ', 'm'] },
-                { word: 'giant', phonemes: ['dʒ', 'aɪ', 'ə', 'n', 't'] },
-                { word: 'gem', phonemes: ['dʒ', 'e', 'm'] }
-            ]
-        }, {
-            id: 'kn-wr-mb',
-            name: '静音字母 kn / wr / mb',
-            phoneme: 'n  r  m',
-            desc: 'kn 发 /n/，wr 发 /r/，mb 发 /m/',
-            words: [
-                { word: 'knife', phonemes: ['n', 'aɪ', 'f'] },
-                { word: 'know', phonemes: ['n', 'əʊ'] },
-                { word: 'knight', phonemes: ['n', 'aɪ', 't'] },
-                { word: 'write', phonemes: ['r', 'aɪ', 't'] },
-                { word: 'wrong', phonemes: ['r', 'ɒ', 'ŋ'] },
-                { word: 'wrist', phonemes: ['r', 'ɪ', 's', 't'] },
-                { word: 'lamb', phonemes: ['l', 'æ', 'm'] },
-                { word: 'comb', phonemes: ['k', 'əʊ', 'm'] },
-                { word: 'thumb', phonemes: ['θ', 'ʌ', 'm'] }
-            ]
-        }, {
-            id: 'schwa',
-            name: '弱读元音 · Schwa',
-            phoneme: '/ə/',
-            desc: '非重读音节中的弱读元音 /ə/',
-            words: [
-                { word: 'about', phonemes: ['ə', 'b', 'aʊ', 't'] },
-                { word: 'above', phonemes: ['ə', 'b', 'ʌ', 'v'] },
-                { word: 'again', phonemes: ['ə', 'g', 'e', 'n'] },
-                { word: 'teacher', phonemes: ['t', 'iː', 'tʃ', 'ə'] },
-                { word: 'doctor', phonemes: ['d', 'ɒ', 'k', 't', 'ə'] },
-                { word: 'pencil', phonemes: ['p', 'e', 'n', 's', 'ə', 'l'] }
-            ]
-        }, {
-            id: 'ck',
-            name: 'ck 组合',
-            phoneme: '/k/',
-            desc: 'ck 在单词末尾发 /k/ 音',
-            words: [
-                { word: 'back', phonemes: ['b', 'æ', 'k'] },
-                { word: 'pack', phonemes: ['p', 'æ', 'k'] },
-                { word: 'sock', phonemes: ['s', 'ɒ', 'k'] },
-                { word: 'truck', phonemes: ['t', 'r', 'ʌ', 'k'] },
-                { word: 'clock', phonemes: ['k', 'l', 'ɒ', 'k'] },
-                { word: 'stick', phonemes: ['s', 't', 'ɪ', 'k'] }
-            ]
-        }, {
-            id: 'dge',
-            name: 'dge 组合',
-            phoneme: '/dʒ/',
-            desc: 'dge 在单词末尾发 /dʒ/ 音',
-            words: [
-                { word: 'bridge', phonemes: ['b', 'r', 'ɪ', 'dʒ'] },
-                { word: 'fridge', phonemes: ['f', 'r', 'ɪ', 'dʒ'] },
-                { word: 'judge', phonemes: ['dʒ', 'ʌ', 'dʒ'] },
-                { word: 'edge', phonemes: ['e', 'dʒ'] },
-                { word: 'badge', phonemes: ['b', 'æ', 'dʒ'] }
-            ]
-        }, {
-            id: 'tch',
-            name: 'tch 组合',
-            phoneme: '/tʃ/',
-            desc: 'tch 在单词末尾发 /tʃ/ 音',
-            words: [
-                { word: 'catch', phonemes: ['k', 'æ', 'tʃ'] },
-                { word: 'match', phonemes: ['m', 'æ', 'tʃ'] },
-                { word: 'watch', phonemes: ['w', 'ɒ', 'tʃ'] },
-                { word: 'kitchen', phonemes: ['k', 'ɪ', 'tʃ', 'ə', 'n'] },
-                { word: 'butcher', phonemes: ['b', 'ʊ', 'tʃ', 'ə'] }
-            ]
-        }, {
-            id: 'qu',
-            name: 'qu 组合',
-            phoneme: '/kw/',
-            desc: 'qu 发 /kw/ 音',
-            words: [
-                { word: 'queen', phonemes: ['k', 'w', 'iː', 'n'] },
-                { word: 'quick', phonemes: ['k', 'w', 'ɪ', 'k'] },
-                { word: 'quiet', phonemes: ['k', 'w', 'aɪ', 'ə', 't'] },
-                { word: 'question', phonemes: ['k', 'w', 'e', 's', 'tʃ', 'ə', 'n'] }
-            ]
-        }, {
-            id: 'x',
-            name: '字母 x',
-            phoneme: '/ks/ /gz/',
-            desc: 'x 在词首发 /z/，在词中发 /ks/ 或 /gz/',
-            words: [
-                { word: 'box', phonemes: ['b', 'ɒ', 'k', 's'] },
-                { word: 'fox', phonemes: ['f', 'ɒ', 'k', 's'] },
-                { word: 'six', phonemes: ['s', 'ɪ', 'k', 's'] },
-                { word: 'taxi', phonemes: ['t', 'æ', 'k', 's', 'iː'] },
-                { word: 'exam', phonemes: ['ɪ', 'g', 'z', 'æ', 'm'] },
-                { word: 'example', phonemes: ['ɪ', 'g', 'z', 'ɑː', 'm', 'p', 'l'] }
-            ]
-        }
+        // ========== 七、辅音二合字母 ==========
+        { id: 'sh', category: '辅音二合字母', name: 'sh', phoneme: '/ʃ/', desc: 'sh 发 /ʃ/ 音',
+            words: [{ word: 'ship', phonemes: ['ʃ','ɪ','p'] },{ word: 'shop', phonemes: ['ʃ','ɒ','p'] },{ word: 'fish', phonemes: ['f','ɪ','ʃ'] },{ word: 'dish', phonemes: ['d','ɪ','ʃ'] },{ word: 'wish', phonemes: ['w','ɪ','ʃ'] },{ word: 'shell', phonemes: ['ʃ','e','l'] }] },
+        { id: 'ch', category: '辅音二合字母', name: 'ch', phoneme: '/tʃ/', desc: 'ch 发 /tʃ/ 音',
+            words: [{ word: 'chat', phonemes: ['tʃ','æ','t'] },{ word: 'chop', phonemes: ['tʃ','ɒ','p'] },{ word: 'chin', phonemes: ['tʃ','ɪ','n'] },{ word: 'much', phonemes: ['m','ʌ','tʃ'] },{ word: 'rich', phonemes: ['r','ɪ','tʃ'] }] },
+        { id: 'th-voiceless', category: '辅音二合字母', name: 'th (清)', phoneme: '/θ/', desc: 'th 发清音 /θ/',
+            words: [{ word: 'thin', phonemes: ['θ','ɪ','n'] },{ word: 'think', phonemes: ['θ','ɪ','ŋ','k'] },{ word: 'thank', phonemes: ['θ','æ','ŋ','k'] },{ word: 'bath', phonemes: ['b','ɑː','θ'] }] },
+        { id: 'th-voiced', category: '辅音二合字母', name: 'th (浊)', phoneme: '/ð/', desc: 'th 发浊音 /ð/',
+            words: [{ word: 'this', phonemes: ['ð','ɪ','s'] },{ word: 'that', phonemes: ['ð','æ','t'] },{ word: 'then', phonemes: ['ð','e','n'] },{ word: 'them', phonemes: ['ð','e','m'] }] },
+        { id: 'wh', category: '辅音二合字母', name: 'wh', phoneme: '/w/', desc: 'wh 发 /w/ 音',
+            words: [{ word: 'what', phonemes: ['w','ɒ','t'] },{ word: 'when', phonemes: ['w','e','n'] },{ word: 'why', phonemes: ['w','aɪ'] },{ word: 'white', phonemes: ['w','aɪ','t'] }] },
+        { id: 'ph', category: '辅音二合字母', name: 'ph', phoneme: '/f/', desc: 'ph 发 /f/ 音',
+            words: [{ word: 'phone', phonemes: ['f','əʊ','n'] },{ word: 'photo', phonemes: ['f','əʊ','t','əʊ'] },{ word: 'dolphin', phonemes: ['d','ɒ','l','f','ɪ','n'] }] },
+        { id: 'gh', category: '辅音二合字母', name: 'gh', phoneme: '/f/', desc: 'gh 发 /f/ 音',
+            words: [{ word: 'laugh', phonemes: ['l','ɑː','f'] },{ word: 'tough', phonemes: ['t','ʌ','f'] },{ word: 'cough', phonemes: ['k','ɒ','f'] },{ word: 'rough', phonemes: ['r','ʌ','f'] }] },
+        { id: 'ng', category: '辅音二合字母', name: 'ng', phoneme: '/ŋ/', desc: 'ng 发 /ŋ/ 音',
+            words: [{ word: 'sing', phonemes: ['s','ɪ','ŋ'] },{ word: 'ring', phonemes: ['r','ɪ','ŋ'] },{ word: 'long', phonemes: ['l','ɒ','ŋ'] },{ word: 'king', phonemes: ['k','ɪ','ŋ'] }] },
+
+        // ========== 八、辅音混合 ==========
+        { id: 'bl', category: '辅音混合', name: 'bl', phoneme: '/bl/', desc: 'bl 混合音',
+            words: [{ word: 'black', phonemes: ['b','l','æ','k'] },{ word: 'blue', phonemes: ['b','l','uː'] },{ word: 'blow', phonemes: ['b','l','əʊ'] },{ word: 'blade', phonemes: ['b','l','eɪ','d'] }] },
+        { id: 'cl', category: '辅音混合', name: 'cl', phoneme: '/kl/', desc: 'cl 混合音',
+            words: [{ word: 'clap', phonemes: ['k','l','æ','p'] },{ word: 'clock', phonemes: ['k','l','ɒ','k'] },{ word: 'clean', phonemes: ['k','l','iː','n'] },{ word: 'close', phonemes: ['k','l','əʊ','z'] }] },
+        { id: 'fl', category: '辅音混合', name: 'fl', phoneme: '/fl/', desc: 'fl 混合音',
+            words: [{ word: 'flag', phonemes: ['f','l','æ','g'] },{ word: 'fly', phonemes: ['f','l','aɪ'] },{ word: 'flower', phonemes: ['f','l','aʊ','ə'] },{ word: 'floor', phonemes: ['f','l','ɔː'] }] },
+        { id: 'gl', category: '辅音混合', name: 'gl', phoneme: '/gl/', desc: 'gl 混合音',
+            words: [{ word: 'glad', phonemes: ['g','l','æ','d'] },{ word: 'glass', phonemes: ['g','l','ɑː','s'] },{ word: 'glue', phonemes: ['g','l','uː'] },{ word: 'globe', phonemes: ['g','l','əʊ','b'] }] },
+        { id: 'pl', category: '辅音混合', name: 'pl', phoneme: '/pl/', desc: 'pl 混合音',
+            words: [{ word: 'play', phonemes: ['p','l','eɪ'] },{ word: 'plane', phonemes: ['p','l','eɪ','n'] },{ word: 'plant', phonemes: ['p','l','ɑː','n','t'] },{ word: 'plate', phonemes: ['p','l','eɪ','t'] }] },
+        { id: 'sl', category: '辅音混合', name: 'sl', phoneme: '/sl/', desc: 'sl 混合音',
+            words: [{ word: 'slow', phonemes: ['s','l','əʊ'] },{ word: 'sleep', phonemes: ['s','l','iː','p'] },{ word: 'slip', phonemes: ['s','l','ɪ','p'] },{ word: 'slide', phonemes: ['s','l','aɪ','d'] }] },
+        { id: 'br', category: '辅音混合', name: 'br', phoneme: '/br/', desc: 'br 混合音',
+            words: [{ word: 'brown', phonemes: ['b','r','aʊ','n'] },{ word: 'bread', phonemes: ['b','r','e','d'] },{ word: 'bring', phonemes: ['b','r','ɪ','ŋ'] },{ word: 'broke', phonemes: ['b','r','əʊ','k'] }] },
+        { id: 'cr', category: '辅音混合', name: 'cr', phoneme: '/kr/', desc: 'cr 混合音',
+            words: [{ word: 'crab', phonemes: ['k','r','æ','b'] },{ word: 'cry', phonemes: ['k','r','aɪ'] },{ word: 'cream', phonemes: ['k','r','iː','m'] },{ word: 'cross', phonemes: ['k','r','ɒ','s'] }] },
+        { id: 'dr', category: '辅音混合', name: 'dr', phoneme: '/dr/', desc: 'dr 混合音',
+            words: [{ word: 'dress', phonemes: ['d','r','e','s'] },{ word: 'drum', phonemes: ['d','r','ʌ','m'] },{ word: 'drive', phonemes: ['d','r','aɪ','v'] },{ word: 'drop', phonemes: ['d','r','ɒ','p'] }] },
+        { id: 'fr', category: '辅音混合', name: 'fr', phoneme: '/fr/', desc: 'fr 混合音',
+            words: [{ word: 'frog', phonemes: ['f','r','ɒ','g'] },{ word: 'from', phonemes: ['f','r','ɒ','m'] },{ word: 'free', phonemes: ['f','r','iː'] },{ word: 'friend', phonemes: ['f','r','e','n','d'] }] },
+        { id: 'gr', category: '辅音混合', name: 'gr', phoneme: '/gr/', desc: 'gr 混合音',
+            words: [{ word: 'green', phonemes: ['g','r','iː','n'] },{ word: 'grass', phonemes: ['g','r','ɑː','s'] },{ word: 'grow', phonemes: ['g','r','əʊ'] },{ word: 'great', phonemes: ['g','r','eɪ','t'] }] },
+        { id: 'pr', category: '辅音混合', name: 'pr', phoneme: '/pr/', desc: 'pr 混合音',
+            words: [{ word: 'pray', phonemes: ['p','r','eɪ'] },{ word: 'press', phonemes: ['p','r','e','s'] },{ word: 'price', phonemes: ['p','r','aɪ','s'] },{ word: 'prince', phonemes: ['p','r','ɪ','n','s'] }] },
+        { id: 'tr', category: '辅音混合', name: 'tr', phoneme: '/tr/', desc: 'tr 混合音',
+            words: [{ word: 'tree', phonemes: ['t','r','iː'] },{ word: 'train', phonemes: ['t','r','eɪ','n'] },{ word: 'try', phonemes: ['t','r','aɪ'] },{ word: 'truck', phonemes: ['t','r','ʌ','k'] }] },
+        { id: 'sk', category: '辅音混合', name: 'sk', phoneme: '/sk/', desc: 'sk 混合音',
+            words: [{ word: 'sky', phonemes: ['s','k','aɪ'] },{ word: 'skate', phonemes: ['s','k','eɪ','t'] },{ word: 'skin', phonemes: ['s','k','ɪ','n'] },{ word: 'skip', phonemes: ['s','k','ɪ','p'] }] },
+        { id: 'sm', category: '辅音混合', name: 'sm', phoneme: '/sm/', desc: 'sm 混合音',
+            words: [{ word: 'small', phonemes: ['s','m','ɔː','l'] },{ word: 'smile', phonemes: ['s','m','aɪ','l'] },{ word: 'smoke', phonemes: ['s','m','əʊ','k'] },{ word: 'smooth', phonemes: ['s','m','uː','ð'] }] },
+        { id: 'sn', category: '辅音混合', name: 'sn', phoneme: '/sn/', desc: 'sn 混合音',
+            words: [{ word: 'snow', phonemes: ['s','n','əʊ'] },{ word: 'snake', phonemes: ['s','n','eɪ','k'] },{ word: 'snack', phonemes: ['s','n','æ','k'] },{ word: 'sniff', phonemes: ['s','n','ɪ','f'] }] },
+        { id: 'sp', category: '辅音混合', name: 'sp', phoneme: '/sp/', desc: 'sp 混合音',
+            words: [{ word: 'spoon', phonemes: ['s','p','uː','n'] },{ word: 'sport', phonemes: ['s','p','ɔː','t'] },{ word: 'speak', phonemes: ['s','p','iː','k'] },{ word: 'spell', phonemes: ['s','p','e','l'] }] },
+        { id: 'st', category: '辅音混合', name: 'st', phoneme: '/st/', desc: 'st 混合音',
+            words: [{ word: 'star', phonemes: ['s','t','ɑː'] },{ word: 'stop', phonemes: ['s','t','ɒ','p'] },{ word: 'stone', phonemes: ['s','t','əʊ','n'] },{ word: 'store', phonemes: ['s','t','ɔː'] }] },
+        { id: 'sw', category: '辅音混合', name: 'sw', phoneme: '/sw/', desc: 'sw 混合音',
+            words: [{ word: 'swim', phonemes: ['s','w','ɪ','m'] },{ word: 'sweet', phonemes: ['s','w','iː','t'] },{ word: 'swing', phonemes: ['s','w','ɪ','ŋ'] },{ word: 'swear', phonemes: ['s','w','eə'] }] },
+
+        // ========== 九、静音字母 ==========
+        { id: 'kn', category: '静音字母', name: 'kn', phoneme: '/n/', desc: 'k 静音，发 /n/',
+            words: [{ word: 'knife', phonemes: ['n','aɪ','f'] },{ word: 'know', phonemes: ['n','əʊ'] },{ word: 'knee', phonemes: ['n','iː'] },{ word: 'knight', phonemes: ['n','aɪ','t'] }] },
+        { id: 'wr', category: '静音字母', name: 'wr', phoneme: '/r/', desc: 'w 静音，发 /r/',
+            words: [{ word: 'write', phonemes: ['r','aɪ','t'] },{ word: 'wrong', phonemes: ['r','ɒ','ŋ'] },{ word: 'wrist', phonemes: ['r','ɪ','s','t'] },{ word: 'wrap', phonemes: ['r','æ','p'] }] },
+        { id: 'mb', category: '静音字母', name: 'mb', phoneme: '/m/', desc: 'b 静音，发 /m/',
+            words: [{ word: 'lamb', phonemes: ['l','æ','m'] },{ word: 'comb', phonemes: ['k','əʊ','m'] },{ word: 'thumb', phonemes: ['θ','ʌ','m'] },{ word: 'climb', phonemes: ['k','l','aɪ','m'] }] },
+        { id: 'gn', category: '静音字母', name: 'gn', phoneme: '/n/', desc: 'g 静音，发 /n/',
+            words: [{ word: 'gnome', phonemes: ['n','əʊ','m'] },{ word: 'gnat', phonemes: ['n','æ','t'] },{ word: 'sign', phonemes: ['s','aɪ','n'] },{ word: 'design', phonemes: ['d','ɪ','z','aɪ','n'] }] },
+        { id: 'sc', category: '静音字母', name: 'sc', phoneme: '/s/', desc: 'c 静音，发 /s/',
+            words: [{ word: 'science', phonemes: ['s','aɪ','ə','n','s'] },{ word: 'scissors', phonemes: ['s','ɪ','z','ə','z'] },{ word: 'scene', phonemes: ['s','iː','n'] }] },
+
+        // ========== 十、词尾组合 ==========
+        { id: 'ck', category: '词尾组合', name: 'ck', phoneme: '/k/', desc: 'ck 在词尾发 /k/',
+            words: [{ word: 'back', phonemes: ['b','æ','k'] },{ word: 'pack', phonemes: ['p','æ','k'] },{ word: 'sock', phonemes: ['s','ɒ','k'] },{ word: 'truck', phonemes: ['t','r','ʌ','k'] },{ word: 'stick', phonemes: ['s','t','ɪ','k'] }] },
+        { id: 'dge', category: '词尾组合', name: 'dge', phoneme: '/dʒ/', desc: 'dge 在词尾发 /dʒ/',
+            words: [{ word: 'bridge', phonemes: ['b','r','ɪ','dʒ'] },{ word: 'fridge', phonemes: ['f','r','ɪ','dʒ'] },{ word: 'judge', phonemes: ['dʒ','ʌ','dʒ'] },{ word: 'edge', phonemes: ['e','dʒ'] },{ word: 'badge', phonemes: ['b','æ','dʒ'] }] },
+        { id: 'tch', category: '词尾组合', name: 'tch', phoneme: '/tʃ/', desc: 'tch 在词尾发 /tʃ/',
+            words: [{ word: 'catch', phonemes: ['k','æ','tʃ'] },{ word: 'match', phonemes: ['m','æ','tʃ'] },{ word: 'watch', phonemes: ['w','ɒ','tʃ'] },{ word: 'kitchen', phonemes: ['k','ɪ','tʃ','ə','n'] }] },
+        { id: 'tion', category: '词尾组合', name: 'tion', phoneme: '/ʃən/', desc: 'tion 发 /ʃən/',
+            words: [{ word: 'station', phonemes: ['s','t','eɪ','ʃ','ə','n'] },{ word: 'action', phonemes: ['æ','k','ʃ','ə','n'] },{ word: 'question', phonemes: ['k','w','e','s','t','ʃ','ə','n'] }] },
+        { id: 'sion', category: '词尾组合', name: 'sion', phoneme: '/ʒən/', desc: 'sion 发 /ʒən/',
+            words: [{ word: 'television', phonemes: ['t','e','l','ɪ','v','ɪ','ʒ','ə','n'] },{ word: 'vision', phonemes: ['v','ɪ','ʒ','ə','n'] },{ word: 'decision', phonemes: ['d','ɪ','s','ɪ','ʒ','ə','n'] }] },
+        { id: 'le', category: '词尾组合', name: 'le', phoneme: '/əl/', desc: 'le 在词尾发 /əl/',
+            words: [{ word: 'apple', phonemes: ['æ','p','əl'] },{ word: 'table', phonemes: ['t','eɪ','b','əl'] },{ word: 'little', phonemes: ['l','ɪ','t','əl'] },{ word: 'battle', phonemes: ['b','æ','t','əl'] }] },
+
+        // ========== 十一、Schwa ==========
+        { id: 'schwa', category: 'Schwa', name: 'schwa', phoneme: '/ə/', desc: '非重读音节的弱读元音 /ə/',
+            words: [{ word: 'about', phonemes: ['ə','b','aʊ','t'] },{ word: 'above', phonemes: ['ə','b','ʌ','v'] },{ word: 'teacher', phonemes: ['t','iː','tʃ','ə'] },{ word: 'doctor', phonemes: ['d','ɒ','k','t','ə'] },{ word: 'pencil', phonemes: ['p','e','n','s','ə','l'] }] },
+
+        // ========== 十二、字母x ==========
+        { id: 'x', category: '其他', name: 'x', phoneme: '/ks/ /gz/', desc: 'x 发 /ks/ 或 /gz/',
+            words: [{ word: 'box', phonemes: ['b','ɒ','k','s'] },{ word: 'fox', phonemes: ['f','ɒ','k','s'] },{ word: 'six', phonemes: ['s','ɪ','k','s'] },{ word: 'exam', phonemes: ['ɪ','g','z','æ','m'] },{ word: 'example', phonemes: ['ɪ','g','z','ɑː','m','p','l'] }] },
+
+        // ========== 十三、qu ==========
+        { id: 'qu', category: '其他', name: 'qu', phoneme: '/kw/', desc: 'qu 发 /kw/',
+            words: [{ word: 'queen', phonemes: ['k','w','iː','n'] },{ word: 'quick', phonemes: ['k','w','ɪ','k'] },{ word: 'quiet', phonemes: ['k','w','aɪ','ə','t'] },{ word: 'question', phonemes: ['k','w','e','s','tʃ','ə','n'] }] }
     ];
 
     // ============================================================
     // 2. 状态
     // ============================================================
-    let currentRuleId = rules[0].id;
+    let currentRuleId = allRules[0].id;
+    let currentCategory = '全部';
     let currentDemoWord = null;
     let isPlaying = false;
 
     // ============================================================
-    // 3. DOM
+    // 3. DOM 引用
     // ============================================================
+    const categoryStrip = document.getElementById('categoryStrip');
     const ruleStrip = document.getElementById('ruleStrip');
     const ruleName = document.getElementById('ruleName');
     const rulePhoneme = document.getElementById('rulePhoneme');
     const ruleDesc = document.getElementById('ruleDesc');
+    const ruleCount = document.getElementById('ruleCount');
     const wordGrid = document.getElementById('wordGrid');
     const blendSteps = document.getElementById('blendSteps');
     const blendHint = document.getElementById('blendHint');
@@ -889,33 +546,20 @@
             return;
         }
         window.speechSynthesis.cancel();
-
         const utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = lang;
         utterance.rate = rate;
         utterance.pitch = 1.0;
         utterance.volume = 1;
-
         const voices = window.speechSynthesis.getVoices();
-        const preferred = voices.find(v =>
-            v.lang.startsWith('en') &&
-            (v.name.includes('Google UK') || v.name.includes('Samantha') || v.name.includes('Alex'))
-        );
+        const preferred = voices.find(v => v.lang.startsWith('en') && (v.name.includes('Google UK') || v.name.includes('Samantha') || v.name.includes('Alex')));
         if (preferred) utterance.voice = preferred;
-
         window.speechSynthesis.speak(utterance);
-        return utterance;
     }
 
-    function speakPhoneme(phoneme) {
-        speak(phoneme, 0.9);
-    }
+    function speakPhoneme(p) { speak(p, 0.9); }
+    function speakWord(w) { speak(w, 0.8); }
 
-    function speakWord(word) {
-        speak(word, 0.8);
-    }
-
-    // 预加载语音
     if (window.speechSynthesis) {
         window.speechSynthesis.getVoices();
         window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
@@ -927,32 +571,20 @@
     function showBlendDemo(wordObj) {
         currentDemoWord = wordObj;
         if (!wordObj) {
-            blendSteps.innerHTML = `<span style="color:#8aacbf;font-size:0.95rem;">👆 点击任意单词的「拼读」开始</span>`;
+            blendSteps.innerHTML = `<span style="color:#8aacbf;font-size:0.9rem;">👆 点击任意单词的「拼读」开始</span>`;
             blendHint.textContent = '💡 点击每个音素可单独听发音，点击「听拼读」自动演示合成过程';
             return;
         }
-
         const phonemes = wordObj.phonemes;
         const fullWord = wordObj.word;
-
         let html = '';
         phonemes.forEach((p, idx) => {
             html += `<span class="step-phoneme" data-phoneme="${p}" data-index="${idx}" onclick="playSinglePhoneme(this, '${p}')">${p}</span>`;
-            if (idx < phonemes.length - 1) {
-                html += `<span class="step-arrow">→</span>`;
-            }
+            if (idx < phonemes.length - 1) html += `<span class="step-arrow">→</span>`;
         });
         html += `<span class="step-arrow">→</span>`;
         html += `<span class="step-result" onclick="speakWord('${fullWord}')" title="点击听完整单词">${fullWord}</span>`;
-
-        html += `
-            <div class="demo-controls">
-                <button class="demo-speak-btn" onclick="playBlendDemo('${fullWord}')">
-                    <span>🔊</span> 听拼读
-                </button>
-            </div>
-        `;
-
+        html += `<div class="demo-controls"><button class="demo-speak-btn" onclick="playBlendDemo('${fullWord}')"><span>🔊</span> 听拼读</button></div>`;
         blendSteps.innerHTML = html;
         blendHint.textContent = '💡 点击每个音素听发音 → 点击完整单词听合成结果';
     }
@@ -966,44 +598,71 @@
 
     function playBlendDemo(word) {
         if (isPlaying) return;
-        const rule = rules.find(r => r.id === currentRuleId);
+        const rule = getCurrentRule();
         if (!rule) return;
         const wordObj = rule.words.find(w => w.word === word);
         if (!wordObj) return;
-
         isPlaying = true;
         const phonemes = wordObj.phonemes;
         const steps = document.querySelectorAll('.step-phoneme');
-
         steps.forEach(el => el.classList.remove('active-step'));
-
         phonemes.forEach((p, idx) => {
             setTimeout(() => {
                 steps.forEach(el => el.classList.remove('active-step'));
-                if (steps[idx]) {
-                    steps[idx].classList.add('active-step');
-                }
+                if (steps[idx]) steps[idx].classList.add('active-step');
                 speakPhoneme(p);
-            }, idx * 500);
+            }, idx * 480);
         });
-
         setTimeout(() => {
             steps.forEach(el => el.classList.remove('active-step'));
             speakWord(word);
             isPlaying = false;
-        }, phonemes.length * 500 + 350);
+        }, phonemes.length * 480 + 350);
     }
 
     // ============================================================
-    // 6. 渲染
+    // 6. 获取当前规则
     // ============================================================
+    function getCurrentRule() {
+        return allRules.find(r => r.id === currentRuleId);
+    }
+
+    function getFilteredRules() {
+        if (currentCategory === '全部') return allRules;
+        return allRules.filter(r => r.category === currentCategory);
+    }
+
+    // ============================================================
+    // 7. 渲染
+    // ============================================================
+    function renderCategories() {
+        const cats = ['全部', ...new Set(allRules.map(r => r.category))];
+        categoryStrip.innerHTML = '';
+        cats.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.className = `cat-btn ${cat === currentCategory ? 'active' : ''}`;
+            btn.textContent = cat;
+            btn.addEventListener('click', () => {
+                currentCategory = cat;
+                const filtered = getFilteredRules();
+                if (filtered.length > 0) {
+                    currentRuleId = filtered[0].id;
+                }
+                renderCategories();
+                renderRules();
+                renderCurrentRule();
+            });
+            categoryStrip.appendChild(btn);
+        });
+    }
+
     function renderRules() {
+        const filtered = getFilteredRules();
         ruleStrip.innerHTML = '';
-        rules.forEach(rule => {
+        filtered.forEach(rule => {
             const btn = document.createElement('button');
             btn.className = `rule-btn ${rule.id === currentRuleId ? 'active' : ''}`;
             btn.textContent = rule.name;
-            btn.dataset.id = rule.id;
             btn.addEventListener('click', () => {
                 currentRuleId = rule.id;
                 renderRules();
@@ -1011,23 +670,28 @@
             });
             ruleStrip.appendChild(btn);
         });
+        if (filtered.length === 0) {
+            ruleStrip.innerHTML = '<span style="color:#8aacbf;font-size:0.85rem;">该分类下暂无规则</span>';
+        }
     }
 
     function renderCurrentRule() {
-        const rule = rules.find(r => r.id === currentRuleId);
-        if (!rule) return;
+        const rule = getCurrentRule();
+        if (!rule) {
+            wordGrid.innerHTML = '<div style="text-align:center;color:#999;padding:20px;">请选择一条规则</div>';
+            return;
+        }
 
         ruleName.textContent = rule.name;
         rulePhoneme.textContent = rule.phoneme;
         ruleDesc.textContent = rule.desc;
+        ruleCount.textContent = rule.words.length + ' 个单词';
 
         wordGrid.innerHTML = '';
         rule.words.forEach((item) => {
             const card = document.createElement('div');
             card.className = 'blend-card';
-            if (currentDemoWord && currentDemoWord.word === item.word) {
-                card.classList.add('active-card');
-            }
+            if (currentDemoWord && currentDemoWord.word === item.word) card.classList.add('active-card');
 
             const wordSpan = document.createElement('div');
             wordSpan.className = 'word-display';
@@ -1054,7 +718,7 @@
 
             const blendBtn = document.createElement('button');
             blendBtn.className = 'speak-btn blend-btn';
-            blendBtn.innerHTML = `🧩 拼读`;
+            blendBtn.textContent = '🧩 拼读';
             blendBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 showBlendDemo(item);
@@ -1065,7 +729,7 @@
 
             const speakBtn = document.createElement('button');
             speakBtn.className = 'speak-btn';
-            speakBtn.innerHTML = `🔊 发音`;
+            speakBtn.textContent = '🔊 发音';
             speakBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 speakWord(item.word);
@@ -1091,47 +755,35 @@
         if (!currentDemoWord) {
             showBlendDemo(null);
         } else {
-            const ruleData = rules.find(r => r.id === currentRuleId);
-            if (ruleData) {
-                const stillExists = ruleData.words.some(w => w.word === currentDemoWord.word);
-                if (stillExists) {
-                    showBlendDemo(currentDemoWord);
-                } else {
-                    showBlendDemo(null);
-                }
-            }
+            const exists = rule.words.some(w => w.word === currentDemoWord.word);
+            showBlendDemo(exists ? currentDemoWord : null);
         }
     }
 
     // ============================================================
-    // 7. 全部朗读
+    // 8. 全部朗读
     // ============================================================
     function speakAllWords() {
-        const rule = rules.find(r => r.id === currentRuleId);
+        const rule = getCurrentRule();
         if (!rule) return;
         rule.words.forEach((item, idx) => {
-            setTimeout(() => {
-                speakWord(item.word);
-            }, idx * 600);
+            setTimeout(() => speakWord(item.word), idx * 550);
         });
     }
-
     speakAllBtn.addEventListener('click', speakAllWords);
 
     document.addEventListener('keydown', (e) => {
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-        if (e.key === ' ' || e.key === 'Space') {
-            e.preventDefault();
-            speakAllWords();
-        }
+        if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); speakAllWords(); }
     });
 
     // ============================================================
-    // 8. 初始化
+    // 9. 初始化
     // ============================================================
+    renderCategories();
     renderRules();
     renderCurrentRule();
-    console.log('🗣️ 音素拼读练习已启动！共 ' + rules.length + ' 条规则');
+    console.log('🗣️ 完整自然拼读已启动！共 ' + allRules.length + ' 条规则');
 </script>
 </body>
 </html>
